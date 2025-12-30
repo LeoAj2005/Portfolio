@@ -1,0 +1,12 @@
+0 verbose cli C:\program files\nodejs\node.exe C:\program files\nodejs\node_modules\npm\bin\npm-cli.js
+1 info using npm@11.7.0
+2 info using node@v24.12.0
+3 silly config load:file:C:\Users\Ajay\AppData\Roaming\nvm\v24.12.0\node_modules\npm\npmrc
+4 silly config load:file:D:\Code\Leo_Website\leo_portfolio\.npmrc
+5 silly config load:file:C:\Users\Ajay\.npmrc
+6 silly config load:file:C:\program files\nodejs\etc\npmrc
+7 verbose title npm run dev
+8 verbose argv "run" "dev"
+9 verbose logfile logs-max:10 dir:D:\Code\Leo_Website\leo_portfolio\clean\_logs\2025-12-29T17_30_01_098Z-
+10 verbose logfile D:\Code\Leo_Website\leo_portfolio\clean\_logs\2025-12-29T17_30_01_098Z-debug-0.log
+11 silly logfile done cleaning log files
