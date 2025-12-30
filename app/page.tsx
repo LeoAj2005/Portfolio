@@ -4,21 +4,55 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { PixelStrip } from "../components/ui/PixelStrip";
 import { SelectedWork } from "../components/sections/SelectedWork";
+import { ProjectModal } from "../components/ui/ProjectModal";
+
+// --- UPDATED PROJECT DATA ---
+// Place your images in 'public/work/' folder
+const PROJECTS = [
+  { 
+    id: 1, 
+    title: "AR Fitness", 
+    category: "Mobile App",
+    color: "#1e1e24", 
+    height: "h-64 md:h-96",
+    // src: "/work/ar-fitness.jpg"  <-- Uncomment when you have the file
+  },
+  { 
+    id: 2, 
+    title: "Fintech Dashboard", 
+    category: "Web Platform",
+    color: "#f8fafc", 
+    height: "h-64",
+    // src: "/work/fintech.jpg"
+  },
+  { 
+    id: 3, 
+    title: "SPOK Identity", 
+    category: "Branding",
+    color: "#0f172a", 
+    height: "h-64 md:h-80",
+    // src: "/work/spok.jpg"
+  },
+  { 
+    id: 4, 
+    title: "Living Algorithms", 
+    category: "R&D",
+    color: "#10b981", 
+    height: "h-64",
+    // src: "/work/algo.jpg"
+  },
+];
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
   
-  // Ref for the hero section to track scroll
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"]
   });
 
-  // PARALLAX LOGIC:
-  // 1. y: Moves the hero text down slightly slower than scroll (0.5 speed)
-  // 2. opacity: Fades out the hero as you scroll past
-  // 3. scale: Shrinks the hero slightly to create "depth" (it looks further away)
   const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
   const heroScale = useTransform(scrollYProgress, [0, 1], [1, 0.9]);
@@ -30,19 +64,25 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
+  useEffect(() => {
+    if (selectedId) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [selectedId]);
+
+  const selectedProject = PROJECTS.find(p => p.id === selectedId);
+
   return (
     <main className="relative w-full font-google-sans bg-[#f5f3ee]">
       
-      {/* ================= HERO SECTION (STICKY PARALLAX) ================= */}
-      {/* h-[110vh] ensures we have enough scroll room for the effect to play out */}
+      {/* ================= HERO SECTION ================= */}
       <div ref={heroRef} className="relative h-screen sticky top-0 z-0 overflow-hidden">
-        
-        {/* Animated Wrapper for Parallax Effect */}
         <motion.div 
           style={{ y: heroY, opacity: heroOpacity, scale: heroScale }}
           className="w-full h-full flex flex-col justify-between pt-8 pb-0 origin-top"
         >
-          {/* Navbar */}
           <motion.nav 
             initial={{ y: -50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -60,7 +100,6 @@ export default function Home() {
             </button>
           </motion.nav>
 
-          {/* Hero Content */}
           <section className="flex-1 flex flex-col justify-center items-center relative z-10 w-full max-w-5xl mx-auto px-6">
             <AnimatePresence>
               {isLoading && (
@@ -128,7 +167,6 @@ export default function Home() {
             )}
           </section>
 
-          {/* Footer Pixel Strip */}
           <footer className="w-full relative mt-auto overflow-hidden">
             <PixelStrip isLoading={isLoading} />
           </footer>
@@ -136,15 +174,18 @@ export default function Home() {
       </div>
 
       {/* ================= PAGE 2: SELECTED WORK ================= */}
-      {/* Z-INDEX 10 ensures this slides ON TOP of the sticky hero.
-         bg-[#f5f3ee] ensures it's solid and covers the text behind it.
-         min-h-screen ensures it takes up full scroll space.
-      */}
       {!isLoading && (
-        <div className="relative z-10 bg-[#f5f3ee] shadow-[0_-20px_50px_rgba(0,0,0,0.1)] rounded-t-3xl">
-          <SelectedWork />
+        <div className="relative z-10 bg-[#f5f3ee] shadow-[0_-20px_50px_rgba(0,0,0,0.1)] rounded-t-[2.5rem] -mt-12 pt-12">
+          <SelectedWork projects={PROJECTS} onSelect={setSelectedId} />
         </div>
       )}
+
+      {/* ================= PROJECT MODAL ================= */}
+      <AnimatePresence>
+        {selectedId && selectedProject && (
+          <ProjectModal project={selectedProject} onClose={() => setSelectedId(null)} />
+        )}
+      </AnimatePresence>
 
     </main>
   );

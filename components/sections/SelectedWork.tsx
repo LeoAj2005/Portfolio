@@ -1,25 +1,46 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
-// Pre-defined rotations to avoid "Math.random() in render" error
-const TAGS = [
-  { label: "product designer", color: "bg-blue-500 text-white", rotate: 2 },
-  { label: "storyteller", color: "bg-sky-400 text-white", rotate: -1 },
-  { label: "ai enthusiast", color: "bg-orange-400 text-white", rotate: 1.5 },
-  { label: "creative dev", color: "bg-yellow-400 text-black", rotate: -2 },
-  { label: "healthcare optimist", color: "bg-rose-300 text-black", rotate: 1 },
+// --- Data: Principles (From Screenshot) ---
+const PRINCIPLES = [
+  {
+    title: "LEAD KINDLY",
+    text: "I’m pretty direct, focusing on the most crucial topics to help people succeed. Kindness is key to trustful bonds.",
+    color: "bg-orange-500",
+    icon: "🧡" 
+  },
+  {
+    title: "STEADY GROWTH",
+    text: "I lead start-ups and teams that scale with resilience over change by honing: Toolsets, skillsets, and mindsets.",
+    color: "bg-yellow-400",
+    icon: "📈"
+  },
+  {
+    title: "DESIGN IMPACT",
+    text: "I’m pragmatic to focus Design efforts reducing costs and increasing revenue. Success aligns outcomes to metrics.",
+    color: "bg-indigo-400",
+    icon: "🎯"
+  }
 ];
 
-const PROJECTS = [
-  { id: 1, title: "AR Fitness", color: "#1e1e24", height: "h-64 md:h-96" },
-  { id: 2, title: "Fintech Dashboard", color: "#f8fafc", height: "h-64" },
-  { id: 3, title: "SPOK Identity", color: "#0f172a", height: "h-64 md:h-80" },
-  { id: 4, title: "Living Algorithms", color: "#10b981", height: "h-64" },
-];
+// --- Types ---
+interface Project {
+  id: number;
+  title: string;
+  category: string;
+  src?: string; // Optional: Local image path (e.g., "/work/project1.jpg")
+  color: string;
+  height: string;
+}
 
-export const SelectedWork = () => {
+interface SelectedWorkProps {
+  projects: Project[];
+  onSelect: (id: number) => void;
+}
+
+export const SelectedWork = ({ projects, onSelect }: SelectedWorkProps) => {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -28,6 +49,24 @@ export const SelectedWork = () => {
 
   const y = useTransform(scrollYProgress, [0, 1], [0, -50]);
 
+  // --- Live Time Logic ---
+  const [time, setTime] = useState("");
+  useEffect(() => {
+    // Updates time every second for that "Live" feel
+    const updateTime = () => {
+      const now = new Date();
+      setTime(now.toLocaleTimeString('en-IN', { 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        hour12: true,
+        timeZone: 'Asia/Kolkata' 
+      }));
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section ref={containerRef} className="relative w-full min-h-screen z-20 px-6 md:px-12 py-24 bg-[#f5f3ee]">
       
@@ -35,48 +74,60 @@ export const SelectedWork = () => {
         
         {/* --- LEFT COLUMN: Sticky Identity --- */}
         <div className="lg:col-span-5 relative">
-          <div className="sticky top-24 flex flex-col gap-8">
+          {/* Sticky wrapper with overflow handling. 
+            If the principles make this too tall, it enables internal scrolling 
+            while keeping the main page scroll natural.
+          */}
+          <div className="sticky top-24 max-h-[calc(100vh-6rem)] overflow-y-auto no-scrollbar flex flex-col gap-8 pr-4">
             
+            {/* Header */}
             <div>
               <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4 text-gray-900">
                 Ajay
               </h2>
               <p className="text-lg text-gray-600 leading-relaxed font-normal">
-                Frontend Architect & Creative Technologist with 5+ years of experience building immersive web experiences. 
-                Currently living in <span className="text-black font-semibold">India</span> and building the future of interaction.
+                Frontend Architect & Creative Technologist. I live in VS Code and think in Motion.
               </p>
             </div>
 
-            <div className="flex gap-4 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
-              {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="w-10 h-10 bg-gray-300 rounded-md animate-pulse" />
+            {/* Location & Time (Updated) */}
+            <div className="flex flex-col gap-1 border-l-2 border-gray-200 pl-4">
+               <div className="flex items-center gap-2">
+                 <span className="relative flex h-3 w-3">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                 </span>
+                 <span className="text-sm font-bold text-gray-900 tracking-wide uppercase">Chennai, India</span>
+               </div>
+               <p className="text-sm text-gray-400 font-mono font-medium">
+                 {time || "--:-- --"} (IST)
+               </p>
+            </div>
+
+            {/* Principles Section (New) */}
+            <div className="flex flex-col gap-4 mt-4">
+              <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">My Principles</p>
+              
+              {PRINCIPLES.map((item, i) => (
+                <motion.div 
+                  key={i}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                  className="group bg-white rounded-2xl p-5 shadow-[0_2px_10px_rgba(0,0,0,0.03)] hover:shadow-md transition-shadow border border-gray-100"
+                >
+                  <div className="flex justify-between items-start mb-3">
+                    <span className="text-xs font-bold text-gray-400 tracking-wider uppercase">{item.title}</span>
+                    {/* The "Ticket" Badge */}
+                    <div className={`${item.color} text-white text-[10px] font-bold px-2 py-1 rounded-md shadow-sm transform rotate-3 group-hover:rotate-0 transition-transform`}>
+                      {item.icon}
+                    </div>
+                  </div>
+                  <p className="text-sm text-gray-600 leading-relaxed font-medium">
+                    {item.text}
+                  </p>
+                </motion.div>
               ))}
-            </div>
-
-            <div>
-              <p className="text-sm text-gray-400 mb-3 font-medium">I am a</p>
-              <div className="flex flex-wrap gap-2">
-                {TAGS.map((tag, i) => (
-                  <motion.span
-                    key={i}
-                    whileHover={{ scale: 1.05, rotate: tag.rotate }} // Fixed: Deterministic rotation
-                    className={`px-4 py-2 rounded-full text-sm font-bold shadow-sm cursor-default ${tag.color}`}
-                  >
-                    {tag.label}
-                  </motion.span>
-                ))}
-              </div>
-            </div>
-
-            <div className="pt-8 border-t border-gray-200">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                <span className="text-sm font-semibold text-gray-900">Currently</span>
-              </div>
-              <p className="text-sm text-gray-500">Working on Living Algorithms</p>
-              <p className="text-sm text-gray-400 font-mono mt-1">
-                {new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })} IST
-              </p>
             </div>
 
           </div>
@@ -86,44 +137,49 @@ export const SelectedWork = () => {
         <div className="lg:col-span-7 flex flex-col gap-8">
           <motion.div style={{ y }} className="grid grid-cols-1 md:grid-cols-2 gap-6">
             
-            {PROJECTS.map((project, i) => (
+            {projects.map((project, i) => (
               <motion.div
-                key={i}
+                key={project.id}
+                layoutId={`project-${project.id}`}
+                onClick={() => onSelect(project.id)}
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.6, delay: i * 0.1 }}
                 whileHover={{ scale: 0.98 }}
-                className={`relative group overflow-hidden rounded-3xl ${project.height} ${i % 3 === 0 ? "md:col-span-2" : ""}`}
+                className={`relative group overflow-hidden rounded-3xl ${project.height} ${i % 3 === 0 ? "md:col-span-2" : ""} cursor-pointer bg-white shadow-sm`}
               >
-                {/* Dynamic background images must remain inline, but we use strict formatting */}
-                <div 
+                {/* Image Handling: Checks for local src first, falls back to Placeholder */}
+                <motion.div 
+                  layoutId={`image-${project.id}`}
                   className="absolute inset-0 w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
                   style={{ 
                     backgroundColor: project.color,
-                    backgroundImage: `url(https://placehold.co/800x600/${project.color.replace('#','')}/FFFFFF/png?text=${encodeURIComponent(project.title)})`
+                    backgroundImage: project.src 
+                      ? `url(${project.src})` 
+                      : `url(https://placehold.co/800x600/${project.color.replace('#','')}/FFFFFF/png?text=${encodeURIComponent(project.title)})`
                   }}
                 />
                 
-                {/* Fixed: Updated 'bg-gradient-to-t' to 'bg-linear-to-t' for Tailwind v4 */}
-                <div className="absolute bottom-0 left-0 p-6 w-full bg-linear-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <h3 className="text-white text-xl font-bold">{project.title}</h3>
+                <div className="absolute bottom-0 left-0 p-6 w-full bg-linear-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <p className="text-xs font-bold text-white/80 uppercase tracking-widest mb-1">{project.category}</p>
+                  <motion.h3 layoutId={`title-${project.id}`} className="text-white text-xl font-bold">{project.title}</motion.h3>
                 </div>
               </motion.div>
             ))}
 
-            <div className="md:col-span-2 h-64 bg-indigo-500 rounded-3xl p-8 flex items-center justify-between text-white relative overflow-hidden group">
+            {/* Footer Link */}
+            <div className="md:col-span-2 h-48 bg-[#171717] rounded-3xl p-8 flex items-center justify-between text-white relative overflow-hidden group cursor-pointer">
                <div className="relative z-10">
                   <h3 className="text-2xl font-bold">See all projects</h3>
-                  <p className="opacity-80">Explore the archive</p>
+                  <p className="opacity-60 text-sm mt-1">Explore the archive</p>
                </div>
                <motion.div 
-                 className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-indigo-600"
-                 whileHover={{ x: 10 }}
+                 className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-white"
+                 whileHover={{ x: 10, backgroundColor: "rgba(255,255,255,0.2)" }}
                >
                  →
                </motion.div>
-               <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity" />
             </div>
 
           </motion.div>
