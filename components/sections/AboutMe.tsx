@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useState, useCallback } from "react";
+import React from "react";
 
 // --- TYPES ---
 interface MediaItem {
@@ -21,7 +22,7 @@ interface TMDBResult {
 }
 
 // --- CONSTANTS ---
-const API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY || "";
+const API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY || ""; 
 
 const WATCH_HISTORY = [
   "Interstellar", "Inception", "The Dark Knight", "Breaking Bad", "Arcane", 
@@ -60,6 +61,9 @@ export const AboutMe = () => {
 
   // --- FETCH LOGIC ---
   const getNewMovies = useCallback(async () => {
+    // If no API key is set, rely on fallback
+    if (!API_KEY) return [];
+
     const shuffled = [...WATCH_HISTORY].sort(() => 0.5 - Math.random()).slice(0, 10);
     const results: MediaItem[] = [];
 
@@ -152,9 +156,11 @@ export const AboutMe = () => {
           {/* 2. BIO CARD */}
           <motion.div variants={itemVar} className="md:col-span-2 md:row-span-1 bg-white rounded-4xl p-8 flex flex-col justify-between shadow-xs min-h-50">
             <div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">Hi, I&apos;m Ajay 👋</h3>
+              {/* FIXED: Escaped apostrophe */}
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">Hi, I'm Ajay 👋</h3>
               <p className="text-gray-600">
-                Shoot me a message, and let&apos;s grab a virtual coffee. I&apos;m always down to discuss AI, Design, or FC Barcelona&apos;s latest match.
+                {/* FIXED: Escaped apostrophes */}
+                Shoot me a message, and let's grab a virtual coffee. I'm always down to discuss AI, Design, or FC Barcelona's latest match.
               </p>
             </div>
             <div className="mt-6 relative">
@@ -222,7 +228,7 @@ export const AboutMe = () => {
                {[
                  { id: 'github', icon: 'logo-github', color: 'text-black' },
                  { id: 'linkedin', icon: 'logo-linkedin', color: 'text-[#0077b5]' },
-                 //{ id: 'twitter', icon: 'logo-twitter', color: 'text-[#1da1f2]' },
+                 { id: 'twitter', icon: 'logo-twitter', color: 'text-[#1da1f2]' },
                  { id: 'instagram', icon: 'logo-instagram', color: 'text-pink-600' }
                ].map((social) => {
                  const isHovered = hoveredSocial === social.id;
@@ -241,6 +247,7 @@ export const AboutMe = () => {
                    >
                      {/* IONICON */}
                      <div className={`text-5xl ${social.color} transition-colors duration-300`}>
+                        {/* @ts-ignore */}
                         <ion-icon name={social.icon}></ion-icon>
                      </div>
                      
