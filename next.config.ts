@@ -1,29 +1,36 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+import type { NextConfig } from 'next';
+
+const nextConfig: NextConfig = {
+  output: 'export',
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'image.tmdb.org', // Allow Movie Posters
+        hostname: 'image.tmdb.org',
       },
       {
         protocol: 'https',
-        hostname: 'images.unsplash.com', // Allow Unsplash Photos
+        hostname: 'images.unsplash.com',
       },
       {
         protocol: 'https',
-        hostname: 'i.scdn.co', // Allow Spotify Album Art
+        hostname: 'i.scdn.co',
       },
       {
         protocol: 'https',
-        hostname: 'cdn.simpleicons.org', // Allow Tech Icons
+        hostname: 'cdn.simpleicons.org',
       },
-       {
+      {
         protocol: 'https',
-        hostname: 'cdn.jsdelivr.net', // Allow DevIcons
+        hostname: 'cdn.jsdelivr.net',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn.arstechnica.net',
       },
     ],
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;
