@@ -11,7 +11,7 @@ import { Toolbox } from "../components/sections/Toolbox";
 import { AboutMe } from "../components/sections/AboutMe";
 import { Footer } from "../components/sections/Footer";
 
-// --- UPDATED PROJECT DATA ---
+// --- PROJECT DATA ---
 const PROJECTS = [
   { 
     id: 1, 
@@ -79,6 +79,15 @@ export default function Home() {
 
   const selectedProject = PROJECTS.find(p => p.id === selectedId);
 
+  // Smooth Scroll Helper
+  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <main className="relative w-full font-google-sans bg-[#f5f3ee]">
       
@@ -97,13 +106,19 @@ export default function Home() {
           >
             <div className="w-8"></div> 
             <div className="hidden md:flex gap-8 text-sm font-medium text-gray-600">
-              <a href="#" className="hover:text-black transition-colors">My Work</a>
-              <a href="#" className="hover:text-black transition-colors">Skills</a>
-              <a href="#" className="hover:text-black transition-colors">Articles</a>
+              <a href="#work" onClick={(e) => scrollToSection(e, 'work')} className="hover:text-black transition-colors">My Work</a>
+              <a href="#skills" onClick={(e) => scrollToSection(e, 'skills')} className="hover:text-black transition-colors">Skills</a>
+              <a href="#about" onClick={(e) => scrollToSection(e, 'about')} className="hover:text-black transition-colors">About</a>
             </div>
-            <button className="bg-black text-white px-6 py-2 rounded-full text-sm font-medium hover:scale-105 transition-transform shadow-lg">
+            
+            {/* Resume Download Button */}
+            <a 
+              href="/Ajay-D-Resume.pdf" 
+              download="Ajay-D-Resume.pdf"
+              className="bg-black text-white px-6 py-2 rounded-full text-sm font-medium hover:scale-105 transition-transform shadow-lg"
+            >
               Resume
-            </button>
+            </a>
           </motion.nav>
 
           {/* Hero Content */}
@@ -182,21 +197,21 @@ export default function Home() {
 
       {/* ================= WORK SECTION (Page 2) ================= */}
       {!isLoading && (
-        <div className="relative z-10 bg-[#f5f3ee] shadow-[0_-20px_50px_rgba(0,0,0,0.1)] rounded-t-[2.5rem] -mt-12 pt-12 pb-24">
+        <div id="work" className="relative z-10 bg-[#f5f3ee] shadow-[0_-20px_50px_rgba(0,0,0,0.1)] rounded-t-[2.5rem] -mt-12 pt-12 pb-24">
           <SelectedWork projects={PROJECTS} onSelect={setSelectedId} />
         </div>
       )}
 
       {/* ================= TOOLBOX SECTION (Page 3) ================= */}
       {!isLoading && (
-        <div className="relative z-20 bg-[#f5f3ee] shadow-[0_-20px_60px_rgba(0,0,0,0.15)] rounded-t-[2.5rem] -mt-12">
+        <div id="skills" className="relative z-20 bg-[#f5f3ee] shadow-[0_-20px_60px_rgba(0,0,0,0.15)] rounded-t-[2.5rem] -mt-12">
            <Toolbox />
         </div>
       )}
 
       {/* ================= ABOUT ME SECTION (Page 4) ================= */}
       {!isLoading && (
-        <div className="relative z-30 bg-[#e5e5e5] shadow-[0_-20px_60px_rgba(0,0,0,0.15)] rounded-t-[2.5rem] -mt-12 pb-12">
+        <div id="about" className="relative z-30 bg-[#e5e5e5] shadow-[0_-20px_60px_rgba(0,0,0,0.15)] rounded-t-[2.5rem] -mt-12 pb-12">
            <AboutMe />
         </div>
       )}
