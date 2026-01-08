@@ -22,10 +22,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* FORCE ICON LOAD: Standard HTML way to ensure it works */}
-        <link rel="icon" href="/Avatar.png" sizes="any" />
+        {/* CACHE BUSTER: The '?v=2' forces the browser to ignore the old cached icon */}
+        <link rel="icon" href="/Avatar.png?v=2" type="image/png" sizes="any" />
         
-        {/* IONICONS SCRIPTS */}
         <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js" async></script>
         <script noModule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js" async></script>
       </head>

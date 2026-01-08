@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
+  // Disable strict image optimization for static export
   images: {
     unoptimized: true,
     remotePatterns: [
@@ -12,10 +13,11 @@ const nextConfig = {
       { protocol: 'https', hostname: 'cdn.arstechnica.net' },
     ],
   },
-  // Add these two blocks to ignore strict errors during deployment
+  // IGNORE TYPESCRIPT ERRORS
   typescript: {
     ignoreBuildErrors: true,
   },
+  // IGNORE ESLINT ERRORS
   eslint: {
     ignoreDuringBuilds: true,
   },
