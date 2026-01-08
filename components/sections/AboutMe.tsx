@@ -5,6 +5,9 @@ import Image from "next/image";
 import { useEffect, useState, useCallback } from "react";
 import React from "react";
 
+// --- THE FIX: Bypass TypeScript check by treating it as a variable ---
+const IonIcon = "ion-icon" as any;
+
 // --- TYPES ---
 interface MediaItem {
   id: number;
@@ -244,8 +247,10 @@ export const AboutMe = () => {
                    >
                      {/* IONICON */}
                      <div className={`text-5xl ${social.color} transition-colors duration-300`}>
-                        {/* THE FIX: We use 'any' to legally bypass the strict check */}
-                        <ion-icon {...({ name: social.icon } as any)}></ion-icon>
+                        {/* THE FIX: Use the variable IonIcon. 
+                           TS sees this as a React component, not an intrinsic element.
+                        */}
+                        <IonIcon name={social.icon}></IonIcon>
                      </div>
                      
                      {/* Tooltip */}
