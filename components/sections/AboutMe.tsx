@@ -21,7 +21,7 @@ interface TMDBResult {
 }
 
 // --- CONSTANTS ---
-const API_KEY = "a867ed5a58599f33ad914ec789c384e2"; 
+const API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY || "";
 
 const WATCH_HISTORY = [
   "Interstellar", "Inception", "The Dark Knight", "Breaking Bad", "Arcane", 
