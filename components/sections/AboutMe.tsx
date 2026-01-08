@@ -311,7 +311,7 @@ export const AboutMe = () => {
                {[
                  { id: 'github', icon: 'logo-github', color: 'text-black' },
                  { id: 'linkedin', icon: 'logo-linkedin', color: 'text-[#0077b5]' },
-                 { id: 'twitter', icon: 'logo-twitter', color: 'text-[#1da1f2]' },
+                 //{ id: 'twitter', icon: 'logo-twitter', color: 'text-[#1da1f2]' },
                  { id: 'instagram', icon: 'logo-instagram', color: 'text-pink-600' }
                ].map((social) => {
                  const isHovered = hoveredSocial === social.id;
