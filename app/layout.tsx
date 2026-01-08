@@ -20,11 +20,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    /* ADDED suppressHydrationWarning:
+      This stops the error caused by browser extensions adding 
+      extra attributes (like class="hydrated") to the html tag.
+    */
+    <html lang="en" suppressHydrationWarning>
       <head>
         {/* CACHE BUSTER: The '?v=2' forces the browser to ignore the old cached icon */}
         <link rel="icon" href="/Avatar.png?v=2" type="image/png" sizes="any" />
         
+        {/* IONICONS SCRIPTS */}
         <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js" async></script>
         <script noModule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js" async></script>
       </head>
