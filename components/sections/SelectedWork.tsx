@@ -79,10 +79,10 @@ export const SelectedWork = ({ projects, onSelect }: SelectedWorkProps) => {
             {/* Header */}
             <div>
               <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4 text-gray-900">
-                Ajay
+                Ajay Doss
               </h2>
               <p className="text-lg text-gray-600 leading-relaxed font-normal">
-                Frontend Architect & Creative Technologist. I live in VS Code and think in Motion.
+                Motivated AI/ML student skilled in Java, Python, full-stack, generative AI, and app development. Passionate about leveraging technology to create impactful solutions.
               </p>
             </div>
 
