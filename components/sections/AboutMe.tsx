@@ -61,7 +61,6 @@ export const AboutMe = () => {
 
   // --- FETCH LOGIC ---
   const getNewMovies = useCallback(async () => {
-    // If no API key is set, rely on fallback
     if (!API_KEY) return [];
 
     const shuffled = [...WATCH_HISTORY].sort(() => 0.5 - Math.random()).slice(0, 10);
@@ -156,10 +155,8 @@ export const AboutMe = () => {
           {/* 2. BIO CARD */}
           <motion.div variants={itemVar} className="md:col-span-2 md:row-span-1 bg-white rounded-4xl p-8 flex flex-col justify-between shadow-xs min-h-50">
             <div>
-              {/* FIXED: Escaped apostrophe */}
               <h3 className="text-2xl font-bold text-gray-900 mb-2">Hi, I'm Ajay 👋</h3>
               <p className="text-gray-600">
-                {/* FIXED: Escaped apostrophes */}
                 Shoot me a message, and let's grab a virtual coffee. I'm always down to discuss AI, Design, or FC Barcelona's latest match.
               </p>
             </div>
@@ -247,8 +244,8 @@ export const AboutMe = () => {
                    >
                      {/* IONICON */}
                      <div className={`text-5xl ${social.color} transition-colors duration-300`}>
-                        {/* @ts-ignore */}
-                        <ion-icon name={social.icon}></ion-icon>
+                        {/* THE FIX: We use 'any' to legally bypass the strict check */}
+                        <ion-icon {...({ name: social.icon } as any)}></ion-icon>
                      </div>
                      
                      {/* Tooltip */}
