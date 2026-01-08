@@ -2,8 +2,9 @@
 
 import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import Image from "next/image";
 
-// --- Data: Principles (From Screenshot) ---
+// --- Data: Principles ---
 const PRINCIPLES = [
   {
     title: "LEAD KINDLY",
@@ -30,8 +31,8 @@ interface Project {
   id: number;
   title: string;
   category: string;
-  src?: string; // Optional: Local image path (e.g., "/work/project1.jpg")
-  color: string;
+  color?: string;
+  image?: string; // New Image Prop
   height: string;
 }
 
@@ -52,7 +53,6 @@ export const SelectedWork = ({ projects, onSelect }: SelectedWorkProps) => {
   // --- Live Time Logic ---
   const [time, setTime] = useState("");
   useEffect(() => {
-    // Updates time every second for that "Live" feel
     const updateTime = () => {
       const now = new Date();
       setTime(now.toLocaleTimeString('en-IN', { 
@@ -72,12 +72,8 @@ export const SelectedWork = ({ projects, onSelect }: SelectedWorkProps) => {
       
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
         
-        {/* --- LEFT COLUMN: Sticky Identity --- */}
+        {/* --- LEFT COLUMN: Sticky Identity & Principles --- */}
         <div className="lg:col-span-5 relative">
-          {/* Sticky wrapper with overflow handling. 
-            If the principles make this too tall, it enables internal scrolling 
-            while keeping the main page scroll natural.
-          */}
           <div className="sticky top-24 max-h-[calc(100vh-6rem)] overflow-y-auto no-scrollbar flex flex-col gap-8 pr-4">
             
             {/* Header */}
@@ -90,7 +86,7 @@ export const SelectedWork = ({ projects, onSelect }: SelectedWorkProps) => {
               </p>
             </div>
 
-            {/* Location & Time (Updated) */}
+            {/* Location & Time */}
             <div className="flex flex-col gap-1 border-l-2 border-gray-200 pl-4">
                <div className="flex items-center gap-2">
                  <span className="relative flex h-3 w-3">
@@ -104,7 +100,7 @@ export const SelectedWork = ({ projects, onSelect }: SelectedWorkProps) => {
                </p>
             </div>
 
-            {/* Principles Section (New) */}
+            {/* Principles Section */}
             <div className="flex flex-col gap-4 mt-4">
               <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">My Principles</p>
               
@@ -118,7 +114,6 @@ export const SelectedWork = ({ projects, onSelect }: SelectedWorkProps) => {
                 >
                   <div className="flex justify-between items-start mb-3">
                     <span className="text-xs font-bold text-gray-400 tracking-wider uppercase">{item.title}</span>
-                    {/* The "Ticket" Badge */}
                     <div className={`${item.color} text-white text-[10px] font-bold px-2 py-1 rounded-md shadow-sm transform rotate-3 group-hover:rotate-0 transition-transform`}>
                       {item.icon}
                     </div>
@@ -148,22 +143,31 @@ export const SelectedWork = ({ projects, onSelect }: SelectedWorkProps) => {
                 transition={{ duration: 0.6, delay: i * 0.1 }}
                 whileHover={{ scale: 0.98 }}
                 className={`relative group overflow-hidden rounded-3xl ${project.height} ${i % 3 === 0 ? "md:col-span-2" : ""} cursor-pointer bg-white shadow-sm`}
+                style={{ backgroundColor: project.color || '#111' }}
               >
-                {/* Image Handling: Checks for local src first, falls back to Placeholder */}
-                <motion.div 
-                  layoutId={`image-${project.id}`}
-                  className="absolute inset-0 w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                  style={{ 
-                    backgroundColor: project.color,
-                    backgroundImage: project.src 
-                      ? `url(${project.src})` 
-                      : `url(https://placehold.co/800x600/${project.color.replace('#','')}/FFFFFF/png?text=${encodeURIComponent(project.title)})`
-                  }}
-                />
+                {/* Image Handling: Uses next/image */}
+                {project.image && (
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    unoptimized
+                  />
+                )}
                 
-                <div className="absolute bottom-0 left-0 p-6 w-full bg-linear-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/40 to-transparent opacity-90 transition-opacity duration-300" />
+
+                {/* Content */}
+                <div className="absolute bottom-0 left-0 p-6 w-full">
                   <p className="text-xs font-bold text-white/80 uppercase tracking-widest mb-1">{project.category}</p>
-                  <motion.h3 layoutId={`title-${project.id}`} className="text-white text-xl font-bold">{project.title}</motion.h3>
+                  <motion.h3 layoutId={`title-${project.id}`} className="text-white text-3xl font-bold">{project.title}</motion.h3>
+                  
+                  {/* Hover Arrow */}
+                  <div className="absolute bottom-6 right-6 w-10 h-10 bg-white text-black rounded-full flex items-center justify-center opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+                    ↗
+                  </div>
                 </div>
               </motion.div>
             ))}

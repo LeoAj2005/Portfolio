@@ -2,44 +2,48 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+
+// --- COMPONENTS ---
 import { PixelStrip } from "../components/ui/PixelStrip";
 import { SelectedWork } from "../components/sections/SelectedWork";
 import { ProjectModal } from "../components/ui/ProjectModal";
+import { Toolbox } from "../components/sections/Toolbox";
+import { AboutMe } from "../components/sections/AboutMe";
+import { Footer } from "../components/sections/Footer";
 
 // --- UPDATED PROJECT DATA ---
-// Place your images in 'public/work/' folder
 const PROJECTS = [
   { 
     id: 1, 
-    title: "AR Fitness", 
-    category: "Mobile App",
+    title: "Tweaiy", 
+    category: "AI Prompt Organizer",
     color: "#1e1e24", 
     height: "h-64 md:h-96",
-    // src: "/work/ar-fitness.jpg"  <-- Uncomment when you have the file
+    image: "https://cdn.arstechnica.net/wp-content/uploads/2025/08/github_logo_invertocat_dark_5-1152x648-1754938613.jpeg"
   },
   { 
     id: 2, 
-    title: "Fintech Dashboard", 
-    category: "Web Platform",
+    title: "OCR_Tool", 
+    category: "Python Automation",
     color: "#f8fafc", 
     height: "h-64",
-    // src: "/work/fintech.jpg"
+    image: "https://cdn.arstechnica.net/wp-content/uploads/2025/08/github_logo_invertocat_dark_5-1152x648-1754938613.jpeg"
   },
   { 
     id: 3, 
-    title: "SPOK Identity", 
-    category: "Branding",
+    title: "Moviz", 
+    category: "Streaming Platform",
     color: "#0f172a", 
     height: "h-64 md:h-80",
-    // src: "/work/spok.jpg"
+    image: "https://cdn.arstechnica.net/wp-content/uploads/2025/08/github_logo_invertocat_dark_5-1152x648-1754938613.jpeg"
   },
   { 
     id: 4, 
-    title: "Living Algorithms", 
-    category: "R&D",
+    title: "Code_Tutor", 
+    category: "VS Code Extension",
     color: "#10b981", 
     height: "h-64",
-    // src: "/work/algo.jpg"
+    image: "https://cdn.arstechnica.net/wp-content/uploads/2025/08/github_logo_invertocat_dark_5-1152x648-1754938613.jpeg"
   },
 ];
 
@@ -47,6 +51,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedId, setSelectedId] = useState<number | null>(null);
   
+  // --- HERO ANIMATION LOGIC ---
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -77,12 +82,13 @@ export default function Home() {
   return (
     <main className="relative w-full font-google-sans bg-[#f5f3ee]">
       
-      {/* ================= HERO SECTION ================= */}
+      {/* ================= HERO SECTION (Page 1) ================= */}
       <div ref={heroRef} className="relative h-screen sticky top-0 z-0 overflow-hidden">
         <motion.div 
           style={{ y: heroY, opacity: heroOpacity, scale: heroScale }}
           className="w-full h-full flex flex-col justify-between pt-8 pb-0 origin-top"
         >
+          {/* Navbar */}
           <motion.nav 
             initial={{ y: -50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -100,6 +106,7 @@ export default function Home() {
             </button>
           </motion.nav>
 
+          {/* Hero Content */}
           <section className="flex-1 flex flex-col justify-center items-center relative z-10 w-full max-w-5xl mx-auto px-6">
             <AnimatePresence>
               {isLoading && (
@@ -173,14 +180,35 @@ export default function Home() {
         </motion.div>
       </div>
 
-      {/* ================= PAGE 2: SELECTED WORK ================= */}
+      {/* ================= WORK SECTION (Page 2) ================= */}
       {!isLoading && (
-        <div className="relative z-10 bg-[#f5f3ee] shadow-[0_-20px_50px_rgba(0,0,0,0.1)] rounded-t-[2.5rem] -mt-12 pt-12">
+        <div className="relative z-10 bg-[#f5f3ee] shadow-[0_-20px_50px_rgba(0,0,0,0.1)] rounded-t-[2.5rem] -mt-12 pt-12 pb-24">
           <SelectedWork projects={PROJECTS} onSelect={setSelectedId} />
         </div>
       )}
 
-      {/* ================= PROJECT MODAL ================= */}
+      {/* ================= TOOLBOX SECTION (Page 3) ================= */}
+      {!isLoading && (
+        <div className="relative z-20 bg-[#f5f3ee] shadow-[0_-20px_60px_rgba(0,0,0,0.15)] rounded-t-[2.5rem] -mt-12">
+           <Toolbox />
+        </div>
+      )}
+
+      {/* ================= ABOUT ME SECTION (Page 4) ================= */}
+      {!isLoading && (
+        <div className="relative z-30 bg-[#e5e5e5] shadow-[0_-20px_60px_rgba(0,0,0,0.15)] rounded-t-[2.5rem] -mt-12 pb-12">
+           <AboutMe />
+        </div>
+      )}
+
+      {/* ================= FOOTER SECTION (Page 5) ================= */}
+      {!isLoading && (
+         <div className="relative z-40">
+           <Footer />
+         </div>
+      )}
+
+      {/* ================= MODALS ================= */}
       <AnimatePresence>
         {selectedId && selectedProject && (
           <ProjectModal project={selectedProject} onClose={() => setSelectedId(null)} />
