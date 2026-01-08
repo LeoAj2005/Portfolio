@@ -8,7 +8,9 @@ export const metadata: Metadata = {
   title: "Ajay | Portfolio",
   description: "Frontend Architect & Creative Technologist",
   icons: {
-    icon: "/Avatar.png", // <--- Points to public/Avatar.png
+    icon: "/Avatar.png",
+    shortcut: "/Avatar.png",
+    apple: "/Avatar.png",
   },
 };
 
@@ -20,7 +22,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* IONICONS SCRIPT: Required for the icons in AboutMe to render */}
+        {/* FORCE ICON LOAD: Standard HTML way to ensure it works */}
+        <link rel="icon" href="/Avatar.png" sizes="any" />
+        
+        {/* IONICONS SCRIPTS */}
         <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js" async></script>
         <script noModule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js" async></script>
       </head>
