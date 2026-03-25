@@ -1,13 +1,17 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Ajay | Portfolio",
-  description: "AI Engineer & Creative Developer",
+  description: "Frontend Architect & Creative Technologist",
+  icons: {
+    icon: "/Avatar.png",
+    shortcut: "/Avatar.png",
+    apple: "/Avatar.png",
+  },
 };
 
 export default function RootLayout({
@@ -16,14 +20,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        {children}
-        {/* Ionicons Scripts */}
-        <Script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js" strategy="lazyOnload" />
-        {/* Fixed: nomodule -> noModule */}
-        <Script noModule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js" strategy="lazyOnload" />
-      </body>
+    /* ADDED suppressHydrationWarning:
+      This stops the error caused by browser extensions adding 
+      extra attributes (like class="hydrated") to the html tag.
+    */
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* CACHE BUSTER: The '?v=2' forces the browser to ignore the old cached icon */}
+        <link rel="icon" href="/Avatar.png?v=2" type="image/png" sizes="any" />
+        
+        {/* IONICONS SCRIPTS */}
+        <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js" async></script>
+        <script noModule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js" async></script>
+      </head>
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }
