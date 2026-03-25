@@ -1,0 +1,18 @@
+0 verbose cli c:\Program Files\nodejs\node.exe c:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js
+1 info using npm@11.7.0
+2 info using node@v24.12.0
+3 silly config load:file:C:\Users\Ajay\AppData\Roaming\nvm\v24.12.0\node_modules\npm\npmrc
+4 silly config load:file:d:\Code\Leo_Website\leo_portfolio\.npmrc
+5 silly config load:file:C:\Users\Ajay\.npmrc
+6 silly config load:file:c:\Program Files\nodejs\etc\npmrc
+7 verbose title npm config get prefix
+8 verbose argv "config" "get" "prefix"
+9 verbose logfile logs-max:10 dir:d:\Code\Leo_Website\leo_portfolio\clean\_logs\2026-03-25T03_28_20_372Z-
+10 verbose logfile d:\Code\Leo_Website\leo_portfolio\clean\_logs\2026-03-25T03_28_20_372Z-debug-0.log
+11 silly logfile done cleaning log files
+12 verbose cwd d:\Code\Leo_Website\leo_portfolio
+13 verbose os Windows_NT 10.0.26200
+14 verbose node v24.12.0
+15 verbose npm  v11.7.0
+16 verbose exit 0
+17 info ok
